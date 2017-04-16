@@ -1,4 +1,5 @@
 import io.reactors._
+
 object HelloWorld {
   def main(args: Array[String]) {
     val welcomeReactor = Reactor[String] {
@@ -10,8 +11,20 @@ object HelloWorld {
         }
     }
     val system = ReactorSystem.default("test-system")
-    val ch = system.spawn(welcomeReactor)
-    println(s"About to call ${ch.toString}")
+
+    //start the welcomeReactor of a thread pool
+    //val ch = system.spawn(welcomeReactor)
+
+    //start the welcomeReactor on a dedicated thread to prevent it from dying
+    val ch = system.spawn(welcomeReactor.withScheduler(JvmScheduler.Key.newThread))
+
+    println(s"About to call $ch")
     ch ! "Alan"
+
+//    needed if welcomeReactor is started of a thread pool
+//    System.out.println("Press any key to terminate")
+//    System.in.read()
+//    System.out.println("Shutting down reactors system...")
+//    system.shutdown()
   }
 }
