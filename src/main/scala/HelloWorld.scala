@@ -15,7 +15,7 @@ object HelloWorld {
     //start the welcomeReactor of a thread pool
     //val ch = system.spawn(welcomeReactor)
 
-    //start the welcomeReactor on a dedicated thread to prevent it from dying
+    //OR start the welcomeReactor on a dedicated thread to prevent it from dying
     val ch = system.spawn(welcomeReactor.withScheduler(JvmScheduler.Key.newThread))
 
     println(s"About to call $ch")
